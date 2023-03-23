@@ -63,6 +63,7 @@ classdef Circulation
 
             if (x(2) > x(1)) % Complete for filling
                 A = obj.filling_phase_dynamic_matrix(t);
+                
             elseif (x(1) > x(3)) %|| something! % Complete for ejection
                 A = obj.ejection_phase_dynamic_matrix(t);
             else % isovolumetric

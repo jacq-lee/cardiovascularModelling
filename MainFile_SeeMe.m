@@ -15,8 +15,8 @@ arterial_pressure = state(:,3);
 aortic_pressure=state(:,4);
 
 for i = 1:length(time)
-    x_dot = circulation_model.get_derivative(time(i), state(i,:))
-    x_dot(4)
+    state_at_time = state(i,:)
+    x_dot = circulation_model.get_derivative(time(i), state(i,:));
     state(i, 3)
     aortic_pressure = circulation_model.L.*x_dot(4) + state(i,3); % pressure just outside the aortic valve
 end
