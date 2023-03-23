@@ -60,14 +60,17 @@ classdef Circulation
             % WRITE YOUR CODE HERE for Task 2
             %  Implement this by deciding whether the model is in a filling, ejecting, or isovolumic phase and using
             %  the corresponding dynamic matrix.
-            
-            if x(2) > x(1) % Complete for filling
+
+            if (x(2) > x(1)) % Complete for filling
                 A = obj.filling_phase_dynamic_matrix(t);
-            elseif x(1) > x(3) %|| something! % Complete for ejection
+            elseif (x(1) > x(3)) %|| something! % Complete for ejection
                 A = obj.ejection_phase_dynamic_matrix(t);
             else % isovolumetric
                 A = obj.isovolumic_phase_dynamic_matrix(t);
             end
+            
+            state_derivatives = transpose(sum(A));
+
             
             %%% End of Write Code for Task 2
         end
@@ -160,9 +163,12 @@ classdef Circulation
             
             % WRITE  YOUR CODE HERE
             % Put all the blood in the atria as an initial condition.
+            f = @(t, x) get_derivative(obj, total_time, x);
+            
             tspan = [0 total_time];
-            f = @get_derviative(obj, t,)
-            [time, y] = ode45(f, tspan, obj.non_slack_blood_volume/obj.C2);          
+            initial_conditions = [0, obj.non_slack_blood_volume/obj.C2, 0, 0];
+            
+            [time, y] = ode45(f, tspan, initial_conditions);          
             
         end
         
