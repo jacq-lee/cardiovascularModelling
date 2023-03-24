@@ -61,15 +61,19 @@ classdef Circulation
             %  Implement this by deciding whether the model is in a filling, ejecting, or isovolumic phase and using
             %  the corresponding dynamic matrix.
 
-            if (x(2) > x(1)) % Complete for filling
+            % FILLING PHASE
+            % Atrial > Ventricular
+            if (x(2) > x(1))
                 A = obj.filling_phase_dynamic_matrix(t);
-%                 disp("Filling");
-            elseif (x(1) > x(3)) %|| something! % Complete for ejection
+
+            % EJECTION PHASE
+            % Ventricular > Aortic
+            elseif (x(1) > x(3)) %|| something!
                 A = obj.ejection_phase_dynamic_matrix(t);
-%                 disp("Ejection");
-            else % isovolumetric
+
+            % ISOVOLUMETRIC PHASE
+            else
                 A = obj.isovolumic_phase_dynamic_matrix(t);
-%                 disp("Isovolumetric");
             end
                   
             state_derivatives = A*x;
@@ -167,7 +171,7 @@ classdef Circulation
             
             % WRITE  YOUR CODE HERE
             % Put all the blood in the atria as an initial condition.
-            f = @(t, x) get_derivative(obj, total_time, x);
+            f = @(t, x) get_derivative(obj, t, x);
             
             tspan = [0 total_time];
             initial_conditions = [0, obj.non_slack_blood_volume/obj.C2, 0, 0];

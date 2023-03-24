@@ -12,32 +12,28 @@ T = 5;
 ventricular_pressure = state(:,1);
 atrial_pressure = state(:,2);
 arterial_pressure = state(:,3);
-% aortic_pressure=state(:,4);
+aortic_pressure = zeros(size(state(:,4)));
 
-% for i = 1:length(time)
-%     if (state(i, 1) > 0)
-%         disp("positive!")
-%     end
-%     x_dot = circulation_model.get_derivative(time(i), state(i,:));
-%     aortic_pressure = circulation_model.L.*x_dot(4) + state(i,3); % pressure just outside the aortic valve
-% end
+% Calculating aortic pressure just outside the aortic valve
+for i = 1:length(time)
+    x_dot = circulation_model.get_derivative(time(i), transpose(state(i,:)));
+    aortic_pressure(i) = state(i,3) + circulation_model.R4*state(i,4) + circulation_model.L.*x_dot(4);
+end
 
 %%% Plotting
 figure()
 LineWidth = 1.5;
 FontSize = 12;
 % Your plotting code should be here
-plot(time, ventricular_pressure);
-hold on;
-plot(time, atrial_pressure);
-plot(time, arterial_pressure);
-% plot(time, aortic_pressure);
+plot(time, ventricular_pressure, 'LineWidth', LineWidth), hold on;
+plot(time, atrial_pressure, 'LineWidth', LineWidth);
+plot(time, arterial_pressure, 'LineWidth', LineWidth);
+plot(time, aortic_pressure, 'LineWidth', LineWidth), hold off;
 
 legend('ventricular', 'atrial', 'arterial', 'aortic') % note the order here
 xlabel('Time (seconds)')
 ylabel('Pressure (mmHg)')
 set(gca, 'FontSize', FontSize)
-hold off;
 
 %% Optimization (you dont need to change any code for this section)
 clear
