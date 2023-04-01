@@ -68,7 +68,7 @@ classdef Circulation
 
             % EJECTION PHASE
             % Ventricular > Aortic
-            elseif (x(1) > x(3)) %|| something!
+            elseif (x(1) > x(3)) || x(4) > 0
                 A = obj.ejection_phase_dynamic_matrix(t);
 
             % ISOVOLUMETRIC PHASE

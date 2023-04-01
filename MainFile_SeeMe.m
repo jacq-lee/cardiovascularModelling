@@ -13,6 +13,7 @@ ventricular_pressure = state(:,1);
 atrial_pressure = state(:,2);
 arterial_pressure = state(:,3);
 aortic_pressure = zeros(size(state(:,4)));
+% x4state = state(:,4)./8; % TESTING
 
 % Calculating aortic pressure just outside the aortic valve
 for i = 1:length(time)
@@ -25,12 +26,14 @@ figure()
 LineWidth = 1.5;
 FontSize = 12;
 % Your plotting code should be here
-plot(time, ventricular_pressure, 'LineWidth', LineWidth), hold on;
-plot(time, atrial_pressure, 'LineWidth', LineWidth);
-plot(time, arterial_pressure, 'LineWidth', LineWidth);
-plot(time, aortic_pressure, 'LineWidth', LineWidth), hold off;
+plot(time, ventricular_pressure, 'r', 'LineWidth', LineWidth), hold on;
+plot(time, atrial_pressure, 'g', 'LineWidth', LineWidth);
+plot(time, arterial_pressure, 'b', 'LineWidth', LineWidth);
+plot(time, aortic_pressure, 'k', 'LineStyle', '--', 'LineWidth', LineWidth), hold off;
+% plot(time, x4state, 'LineWidth', LineWidth), hold off; % TESTING
 
 legend('ventricular', 'atrial', 'arterial', 'aortic') % note the order here
+title('Pressure over Time')
 xlabel('Time (seconds)')
 ylabel('Pressure (mmHg)')
 set(gca, 'FontSize', FontSize)
